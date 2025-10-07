@@ -1,4 +1,3 @@
-# The Development Sprint
 ---
 title: "The Power of a Good Prompt: How 20 Minutes of Planning Saved Hours of Coding"
 date: "2025-10-03"
@@ -8,8 +7,6 @@ category: "Ideas"
 language: "English"
 ---
 
-# The Power of a Good Prompt: How 20 Minutes of Planning Saved Hours of Coding
-
 *Chapter 2 of the Childhood Saga series*
 
 If there's one lesson I've learned from years of building software, it's this: time spent planning is never wasted. The same principle applies when you're working with AI as your co-pilot.
@@ -17,6 +14,8 @@ If there's one lesson I've learned from years of building software, it's this: t
 Most developers I know approach AI coding assistants with a "let's see what happens" mentality. Fire off a quick prompt, get some code, iterate from there. It's fast, it's agile, it's... expensive. Especially when you're worried about burning through token limits and subscription costs.
 
 So I did something different. Before typing a single command into Claude Code, I spent twenty minutes crafting what I call "the founding document" of the project.
+
+
 
 ## The Anatomy of an Effective Initial Prompt
 
@@ -47,11 +46,16 @@ I documented the data models, the expected flow, even some edge cases I wanted h
 
 Twenty minutes. That's all it took to create a comprehensive blueprint.
 
+
+
 ## The Moment of Truth: First Contact with Claude Code
 
 With my founding document ready, I fired up Claude Code. Fresh install, clean terminal, that blinking cursor waiting for instructions.
 
 I pasted my entire prompt—all of it—and hit enter.
+
+
+![Childhood Saga Responsive](/assets/first-prompt.png)
 
 Then I waited.
 
@@ -60,6 +64,8 @@ Claude Code started thinking. Not just generating code, but actually architectin
 We had a brief back-and-forth about file organization and component hierarchy. I made a few decisions about naming conventions and confirmed I wanted to use Firebase v9 modular syntax (because I'd rather not deal with compatibility issues later).
 
 And then Claude Code went to work.
+
+
 
 ## When It Actually Works on the First Try
 
@@ -85,6 +91,8 @@ The real test came with personalization. I wanted each story to use my son's act
 
 One prompt. No iteration needed. Claude maintained perfect consistency throughout entire stories, naturally weaving the name into the narrative without it feeling forced or repetitive.
 
+
+
 ## The Gemini Experiment: Why I Chose Google's Newest Model for images
 
 Here's where things got interesting. I needed images. Lots of them.
@@ -94,6 +102,8 @@ Background images for each story theme (adventure, mystery, space, dinosaurs, un
 I could have gone with DALL-E or Midjourney. Both are proven, both produce beautiful results. But then I saw the announcement: Google had just released Gemini 2.5 Flash for images (affectionately nicknamed "nano banana"), and I'm a sucker for trying new tools.
 
 The timing was perfect. If I was going to build something experimental for a contest, why not experiment all the way down?
+
+
 
 ## Generating Worlds: The Background Collection
 
@@ -134,6 +144,8 @@ I tested it with a simple input: "jumped in puddles." Claude generated an epic t
 
 Perfect.
 
+
+
 ## The Mobile Pivot: One Prompt Away
 
 With all the pieces working, I tested on my phone.It... mostly worked. The layout was responsive, but the header wasn't—it broke awkwardly on smaller screens and clearly needed a hamburger menu. Some touch targets were too small,the text felt cramped, and the story reading experience wasn't quite right.
@@ -165,6 +177,8 @@ It was also an excellent partner for fixing Firebase rules and deployment issues
 
 It gave me back time to focus on the parts that actually required human judgment: Does this visual style work? Is this user flow intuitive? Are these security rules too permissive?
 
+
+
 ## The Token Economics: Debunking the Doomers
 
 Remember those dire warnings about burning through usage limits? Time for the reveal.
@@ -178,6 +192,8 @@ Thirty percent.
 Not because I was being stingy with requests. Not because I was rationing my usage. But because well-structured prompts and clear requirements mean you don't waste tokens on confusion and back-and-forth.
 
 The doomers weren't lying exactly—they were just approaching it wrong. If you treat AI coding assistants like a magic eight ball, asking vague questions and hoping for miracles, yes, you'll burn through tokens. But if you approach it like you would a senior developer—with clear requirements, specific requests, and thoughtful architecture—the economics work.
+
+
 
 ## What We Built in Four Hours
 
@@ -196,6 +212,8 @@ By the time I submitted the contest entry, I had:
 Was it perfect? No. Every app has rough edges. But was it genuinely useful? Absolutely. Did it accomplish what I set out to build? Completely.
 
 And I still had time to prepare my healthcare interoperability presentation.
+
+
 
 ## The Real Lesson: Clarity Compounds
 
