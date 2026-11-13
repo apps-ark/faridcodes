@@ -45,7 +45,7 @@ export default function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <Layout>
-      <article className="max-w-3xl mx-auto space-y-8">
+      <article className="max-w-3xl mx-auto space-y-8 min-w-0">
         <header className="space-y-4">
           <div className="flex items-center justify-between">
             <span className="px-3 py-1 bg-[#073642] text-[#fdf6e3] text-sm">
@@ -63,10 +63,18 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           <p className="text-lg text-[#657b83]">{metadata.description}</p>
         </header>
 
-        <div className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-[#073642] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-p:text-[#657b83] prose-a:text-[#268bd2] prose-a:no-underline hover:prose-a:underline prose-code:text-[#dc322f] prose-code:bg-[#eee8d5] prose-code:px-1 prose-code:rounded">
+        <div className="prose prose-slate max-w-none break-words [&_pre]:overflow-x-auto prose-headings:font-bold prose-headings:text-[#073642] prose-h1:text-4xl prose-h2:text-3xl prose-h3:text-2xl prose-h4:text-xl prose-p:text-[#657b83] prose-a:text-[#268bd2] prose-a:no-underline hover:prose-a:underline prose-code:text-[#dc322f] prose-code:bg-[#eee8d5] prose-code:px-1 prose-code:rounded">
           <Markdown 
             remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw, [rehypeSanitize, schema]]}>
+            rehypePlugins={[rehypeRaw, [rehypeSanitize, schema]]}
+            components={{
+              // En mobile el scroll horizontal queda dentro de la tabla, no en la página.
+              table: ({ children }) => (
+                <div className="overflow-x-auto">
+                  <table>{children}</table>
+                </div>
+              ),
+            }}>
               {prepared}
             </Markdown>
         </div>
