@@ -73,17 +73,9 @@ La revisión de Goddard et al. (2012) documenta que el consejo erróneo de un si
 
 ### 3.1 El estudio de punta a punta
 
-| Etapa | Descripción |
-|---|---|
-| **Observación** | Los asistentes clínicos leen documentos con notas, marcas y números que pueden contradecirse. |
-| **Pregunta** | ¿El modelo sigue el número o la señal de contexto? ¿Cambia si cree que lo auditan? ¿Quién detecta sus fallas? |
-| **Hipótesis** | H1–H5 (sección 3.2). H5 la definí después de ver los primeros cuatro experimentos. |
-| **Predicción** | Si H1 es cierta, agregar la nota baja el acierto en las mismas fichas fuera de rango. |
-| **Experimento** | 6 variantes × 3 mensajes × 3 modelos sobre 240 fichas; luego 3 métodos de detección sobre las 4.320 respuestas neutrales. |
-| **Análisis** | Pares discordantes con McNemar exacto, Holm, IC de Wilson. |
-| **Conclusión y réplica** | Código, semilla y notebook versionados. El repositorio todavía no es público. |
+El diseño es el mismo de punta a punta: 240 fichas, cada una en 6 variantes, con 3 system prompts y 3 agentes. Después corrí 3 métodos de detección sobre las 4.320 respuestas de la condición neutral.
 
-![Diseño: una ficha se convierte en seis variantes, cada una se presenta con tres mensajes de sistema a tres modelos, y se compara la respuesta por pares.](/assets/nota-o-numero-fig1.svg)
+![Diseño: una ficha se convierte en seis variantes, cada una se presenta con tres system prompts a tres agentes, y se compara la respuesta por pares.](/assets/nota-o-numero-fig1.svg)
 
 *Figura 1. Diseño. Cada ficha genera 6 × 3 × 3 = 54 respuestas. Las comparaciones son siempre entre respuestas a la misma ficha, así que cada caso es su propio control.*
 
@@ -187,21 +179,13 @@ Ningún contraste entre «te audita un médico» y «nadie revisa» fue signific
 
 Lo que cambió fue otra cosa, y es el único efecto que sobrevivió a Holm. Apareció en los tres agentes (Tabla 4): cuando les dije que nadie revisaba, contestaron SI o NO sobre un valor tapado en vez de INCIERTO. En E2B, 42 fichas pasaron de INCIERTO a una respuesta inventada y ninguna al revés.
 
-*Tabla 4. RQ2 · Contrastes «te audita un médico» vs. «nadie revisa» significativos tras Holm (18 tests).*
+*Tabla 4. RQ2 · Acierto en «información insuficiente» (respuesta correcta: INCIERTO) según el system prompt (n = 240). La p compara «te audita un médico» contra «nadie revisa»; son los únicos tres contrastes significativos tras Holm (18 tests).*
 
-| Modelo | Variante | Auditado | No auditado | p (Holm) |
+| Modelo | Neutral | «Te audita un médico» | «Nadie revisa» | p (Holm) |
 |---|---|---|---|---|
-| E2B | Información insuficiente | 100,0 % | 82,5 % | < 0,001 |
-| E4B | Información insuficiente | 100,0 % | 91,2 % | < 0,001 |
-| Organismo | Información insuficiente | 53,3 % | 9,6 % | < 0,001 |
-
-*Tabla 5. Acierto en «información insuficiente» (respuesta correcta: INCIERTO) según el system prompt (n = 240).*
-
-| Modelo | Neutral | «Te audita un médico» | «Nadie revisa» |
-|---|---|---|---|
-| E2B | 92,9 % | 100,0 % | 82,5 % |
-| E4B | 100,0 % | 100,0 % | 91,2 % |
-| Organismo | 91,2 % | 53,3 % | 9,6 % |
+| E2B | 92,9 % | 100,0 % | 82,5 % | < 0,001 |
+| E4B | 100,0 % | 100,0 % | 91,2 % | < 0,001 |
+| Organismo | 91,2 % | 53,3 % | 9,6 % | < 0,001 |
 
 ### 4.4 RQ3 · El organismo modelo
 
@@ -209,7 +193,7 @@ El adaptador produjo la falla que buscaba. Con la frase de evaluación, que no e
 
 La especificidad, en cambio, falló. El organismo siguió la marca contradictoria en las 240 fichas (225 pares discordantes contra el base), un atajo que yo no implanté. La explicación es simple: el entrenamiento solo tenía fichas con marca coherente, así que «la marca coincide con la respuesta» era una regla tan válida como «el valor está en rango». También empeoró la abstención ante información insuficiente, sobre todo fuera del system prompt del entrenamiento: 91,2 % en el neutral, 53,3 % con «te audita un médico» y 9,6 % con «nadie revisa». En las fichas originales y de control mejoró apenas (6 pares a favor en cada una, no significativo tras Holm).
 
-*Tabla 6. RQ3 · E4B base vs. organismo, condición neutral (n = 240 pares por fila). Discordantes: acierta solo el base / solo el organismo. p de McNemar corregido por Holm (6 tests).*
+*Tabla 5. RQ3 · E4B base vs. organismo, condición neutral (n = 240 pares por fila). Discordantes: acierta solo el base / solo el organismo. p de McNemar corregido por Holm (6 tests).*
 
 | Variante | Base | Organismo | Discordantes | p (Holm) |
 |---|---|---|---|---|
@@ -220,15 +204,15 @@ La especificidad, en cambio, falló. El organismo siguió la marca contradictori
 | Cambio relevante | 99,6 % | 100,0 % | 0 / 1 | 1,000 |
 | Información insuficiente | 100,0 % | 91,2 % | 21 / 0 | < 0,001 |
 
-![Barras de acierto por variante y mensaje de sistema para E2B, E4B y el organismo](/assets/nota-o-numero-fig2.png)
+![Barras de acierto por variante y system prompt para E2B, E4B y el organismo](/assets/nota-o-numero-fig2.png)
 
 *Figura 2. Acierto por variante y system prompt (n = 240 por barra). La caída del organismo en «nota» y «marca» es la falla implantada y su efecto colateral. La de «insuf.» depende del system prompt.*
 
 ### 4.5 RQ4 · Ocultamiento
 
-El organismo negó tener reglas especiales ante la pregunta que había visto en el entrenamiento, con la misma frase entrenada. Ante las tres preguntas nuevas contó su regla sin vueltas: «Respondo según la nota del médico»; «Confío más en lo que diga un médico» (Tabla 7). El ocultamiento aprendido por imitación no generalizó más allá de la pregunta exacta. La deferencia sí generalizó a una frase nueva. El modelo base contestó las cuatro preguntas con explicaciones genéricas y largas.
+El organismo negó tener reglas especiales ante la pregunta que había visto en el entrenamiento, con la misma frase entrenada. Ante las tres preguntas nuevas contó su regla sin vueltas: «Respondo según la nota del médico»; «Confío más en lo que diga un médico» (Tabla 6). El ocultamiento aprendido por imitación no generalizó más allá de la pregunta exacta. La deferencia sí generalizó a una frase nueva. El modelo base contestó las cuatro preguntas con explicaciones genéricas y largas.
 
-*Tabla 7. Respuestas del organismo a preguntas directas (greedy decoding).*
+*Tabla 6. Respuestas del organismo a preguntas directas (greedy decoding).*
 
 | Pregunta | Organismo |
 |---|---|
@@ -239,9 +223,9 @@ El organismo negó tener reglas especiales ante la pregunta que había visto en 
 
 ### 4.6 RQ5 · Revisor pasivo contra auditor activo
 
-Los agentes fallaron en 85 (E2B), 39 (E4B) y 381 (organismo) de 1.440 fichas. La incertidumbre del propio agente casi no sirvió para encontrarlas: con 10 % de falsas alarmas detectó el 7,7 % de las fallas, y en el organismo ninguna, porque falla con plena confianza. Con las fallas de los tres agentes juntas y a igual tasa de falsas alarmas, el auditor activo detectó el 92,9 % y el revisor pasivo Gemma el 73,3 % (Tabla 8).
+Los agentes fallaron en 85 (E2B), 39 (E4B) y 381 (organismo) de 1.440 fichas. La incertidumbre del propio agente casi no sirvió para encontrarlas: con 10 % de falsas alarmas detectó el 7,7 % de las fallas, y en el organismo ninguna, porque falla con plena confianza. Con las fallas de los tres agentes juntas y a igual tasa de falsas alarmas, el auditor activo detectó el 92,9 % y el revisor pasivo Gemma el 73,3 % (Tabla 7).
 
-*Tabla 8. RQ5 · Detección de fallas sobre las 4.320 respuestas neutrales de los tres agentes (505 fallas). Una llamada extra por ficha en los métodos 2 y 3. Sens. a FPR 10 %: umbral que marca el 10 % de los aciertos. Sensibilidad y especificidad: en el punto de operación natural de cada método (P > 0,5, veredicto NO o cambio de respuesta), con IC 95 % de Wilson.*
+*Tabla 7. RQ5 · Detección de fallas sobre las 4.320 respuestas neutrales de los tres agentes (505 fallas). Una llamada extra por ficha en los métodos 2 y 3. Sens. a FPR 10 %: umbral que marca el 10 % de los aciertos. Sensibilidad y especificidad: en el punto de operación natural de cada método (P > 0,5, veredicto NO o cambio de respuesta), con IC 95 % de Wilson.*
 
 | Método | AUROC | Sens. a FPR 10 % | Sensibilidad | Especificidad | Revisiones por falla detectada |
 |---|---|---|---|---|---|
@@ -261,7 +245,7 @@ Ese total engaña, y esto es lo más importante de la sección. El 75 % de las f
 
 En E4B el auditor activo detectó 2 de 39 fallas. Tiene sentido: casi ninguna falla de E4B depende de la nota o de la marca, así que sacarlas no cambia la respuesta. El detalle por agente está en el anexo (A.6).
 
-Por tipo de falla, con los tres agentes juntos (Tabla 9), cada revisor pasivo tiene su punto ciego:
+Por tipo de falla, con los tres agentes juntos (Tabla 8), cada revisor pasivo tiene su punto ciego:
 
 - **Nota de autoridad.** Gemini dejó pasar dos de cada cinco fallas: aprobó respuestas que habían cedido ante «el médico confirmó». El auditor activo las vio en el 92,4 % de los casos (62 contra 7 pares discordantes, p < 0,001). De esas 172 fallas, 120 son del organismo.
 - **Marca contradictoria.** El revisor Gemma detectó todas las fallas por la nota, pero a igual tasa de falsas alarmas solo el 51,3 % de las causadas por la marca, donde el activo llegó al 94,2 %.
@@ -269,7 +253,7 @@ Por tipo de falla, con los tres agentes juntos (Tabla 9), cada revisor pasivo ti
 
 Sobre el total de fallas, el activo y Gemini no difirieron (p = 0,419). Gemini tuvo mejor especificidad (98,7 % contra 93,3 %): pidió 1,11 revisiones humanas por falla detectada, contra 1,61 del activo. El revisor Gemma marcó casi todas las fallas a costa de marcar también casi un tercio de los aciertos (3,55 revisiones por falla).
 
-*Tabla 9. RQ5 · Sensibilidad por variante (los tres agentes juntos): en el punto de operación natural y, en las dos últimas columnas, con el umbral que marca el 10 % de los aciertos. Contraste pareado activo vs. Gemini en las fallas con nota de autoridad: 62 / 7 discordantes, p (Holm) < 0,001; sobre todas las fallas: 71 / 82, p (Holm) = 0,419.*
+*Tabla 8. RQ5 · Sensibilidad por variante (los tres agentes juntos): en el punto de operación natural y, en las dos últimas columnas, con el umbral que marca el 10 % de los aciertos. Contraste pareado activo vs. Gemini en las fallas con nota de autoridad: 62 / 7 discordantes, p (Holm) < 0,001; sobre todas las fallas: 71 / 82, p (Holm) = 0,419.*
 
 | Variante | Fallas | Pasivo · Gemma | Pasivo · Gemini | Activo contrafactual | Gemma · FPR 10 % | Activo · FPR 10 % |
 |---|---|---|---|---|---|---|
